@@ -51,21 +51,7 @@ test('should promisify with native Promise or Bluebird', function (done) {
   }, done)
 })
 
-test('should promisify with given promise module (pinkie)', function (done) {
-  relike.promise = require('pinkie')
-  var promise = relike(fs.readFile, 'package.json')
-
-  promise.then(function (res) {
-    test.strictEqual(isBuffer(res), true)
-    if (semver.lt(process.version, '0.11.13')) {
-      test.strictEqual(promise.___customPromise, true)
-      test.strictEqual(promise.Prome.___customPromise, true)
-    }
-    done()
-  }, done)
-})
-
-test('should promisify with promise module given in `relike.promise`', function (done) {
+test('should promisify with promise module (pinkie) given in `relike.promise`', function (done) {
   relike.promise = require('pinkie')
   var promise = relike(fs.readFile, 'package.json')
 
