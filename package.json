@@ -1,6 +1,6 @@
 {
   "name": "relike",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Simple promisify a callback-style function with sane defaults. Support promisify-ing sync functions.",
   "repository": "hybridables/relike",
   "author": "Charlike Mike Reagent <@tunnckoCore> (http://www.tunnckocore.tk)",
