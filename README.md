@@ -5,6 +5,22 @@
 [![code climate][codeclimate-img]][codeclimate-url] [![standard code style][standard-img]][standard-url] [![travis build status][travis-img]][travis-url] [![coverage status][coveralls-img]][coveralls-url] [![dependency status][david-img]][david-url]
 
 
+## What's the difference?
+> _What's the difference between me and you?!  
+> **–– Dr Dre feat. Eminem & X-Zibit - Whats the Difference, https://youtu.be/8y5MjguI-pM**_
+
+What's the difference between this module, [relike-all](https://github.com/hybridables/relike-all) and [redolent](https://github.com/hybridables/redolent)?  
+–– Simply, almost nothing.
+
+1. This one just accept `sync` or `async` function which is executed immediately with next arguments, after that it  returns `Promise`.
+2. [relike-all](https://github.com/hybridables/relike-all) accepts everything and returns `Promise`. But it is little bit tricky:
+  - if you pass only one **non-function** argument to it, it will pass it to promise
+  - if you pass more that one arguments to it, it will create array from them and pass it to promise
+  - if you pass `function` as first argument, next arguments will be passed to this function
+3. [redolent](https://github.com/hybridables/redolent) accepts **everything** and returns function, which when is executed it returns `Promise`. Above things applies here, because it is on top of `relike-all`.
+
+> **Notice:** Both `relike` and `relike-all` direcly executes first argument (if function) and returns `Promise`.
+
 ## Install
 ```
 npm i relike --save
