@@ -1,5 +1,9 @@
 
 
+## 1.0.3 - 2016-01-26
+- Release v1.0.3 / npm@v1.0.3
+- add `.promisify` method
+
 ## 1.0.2 - 2016-01-26
 - Release v1.0.2 / npm@v1.0.2
 - update related libs
