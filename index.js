@@ -36,7 +36,7 @@ var utils = require('./utils')
  * @return {Promise} promise
  * @api public
  */
-module.exports = function relike (fn) {
+var relike = module.exports = function relike (fn) {
   var Prome = utils.nativeOrAnother(relike.promise)
   if (typeof fn !== 'function') {
     return Prome.reject(new TypeError('relike expect a function'))
@@ -68,4 +68,38 @@ module.exports = function relike (fn) {
   promise.___customPromise = Prome.___customPromise
   promise.___bluebirdPromise = Prome.___bluebirdPromise
   return promise
+}
+
+/**
+ * Wraps a function and returns a function that when is
+ * invoked returns Promise. Same as `Bluebird.promisify`.
+ *
+ * **Example**
+ *
+ * ```js
+ * const fs = require('fs')
+ * const relike = require('relike')
+ * const readFile = relike.promisify(fs.readFile)
+ *
+ * readFile('package.json', 'utf8')
+ *   .then(JSON.parse)
+ *   .then(data => {
+ *     console.log(data.name) // => 'relike'
+ *   })
+ * ```
+ *
+ * @name   .promisify
+ * @param  {Function} `[fn]` function to promisify
+ * @param  {Function} `[Prome]` custom Promise constructor/module to use, e.g. `Q`
+ * @return {Function} promisified function
+ * @api public
+ */
+module.exports.promisify = function relikePromisify (fn, Prome) {
+  var self = this
+  return function promisified () {
+    var ctx = self || this
+    var args = utils.sliced(arguments)
+    relike.promise = Prome || relikePromisify.promise || promisified.promise
+    return relike.apply(ctx, [fn].concat(args))
+  }
 }

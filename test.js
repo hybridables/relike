@@ -78,7 +78,7 @@ test('should skip last argument only if it is `fn(foo, bar, cb)` (async fn)', fu
     test.strictEqual(isArray(res), true)
     test.deepEqual(res, [111, 222, noop])
     done()
-  })
+  }, done)
 })
 
 test('should not skip last argument and work core api (fs.readFileSync)', function (done) {
@@ -86,7 +86,7 @@ test('should not skip last argument and work core api (fs.readFileSync)', functi
     test.strictEqual(isArray(res), true)
     test.deepEqual(res, [333, 5555, fs.readFileSync])
     done()
-  })
+  }, done)
 })
 
 test('should not skip if pass callback fn, e.g. fn(err, res) as last argument', function (done) {
@@ -97,14 +97,14 @@ test('should not skip if pass callback fn, e.g. fn(err, res) as last argument', 
     test.strictEqual(isArray(res), true)
     test.deepEqual(res, [123, foo])
     done()
-  })
+  }, done)
 })
 
 test('should promisify sync function `fs.readFileSync` and handle utf8 result', function (done) {
   var promise = relike(fs.readFileSync, 'package.json', 'utf8')
 
   promise
-    .then(JSON.parse)
+    .then(JSON.parse, done)
     .then(function (res) {
       test.strictEqual(res.name, 'relike')
       done()
@@ -121,10 +121,20 @@ test('should promisify `fs.readFileSync` and handle buffer result', function (do
 test('should catch errors from failing sync function', function (done) {
   var promise = relike(fs.readFileSync, 'foobar.json', 'utf8')
 
-  promise
-    .catch(function (err) {
-      test.strictEqual(err.code, 'ENOENT')
-      test.strictEqual(/no such file or directory/.test(err.message), true)
+  promise.catch(function (err) {
+    test.strictEqual(err.code, 'ENOENT')
+    test.strictEqual(/no such file or directory/.test(err.message), true)
+    done()
+  })
+})
+
+test('should `.promisify` method wrap a function and return a function', function (done) {
+  var readFile = relike.promisify(fs.readFile)
+
+  readFile('package.json', 'utf8')
+    .then(JSON.parse, done)
+    .then(function (data) {
+      test.strictEqual(data.name, 'relike')
       done()
-    })
+    }, done)
 })

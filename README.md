@@ -34,7 +34,7 @@ npm i relike --save
 const relike = require('relike')
 ```
 
-### [relike](./index.js#L38)
+### [relike](./index.js#L39)
 > Will try to promisify `fn` with native Promise, otherwise will use `Bluebird`
 or you can give different promise module to `relike.promise`, for example `pinkie`.
 
@@ -63,6 +63,28 @@ relike(fs.readFileSync, 'package.json', 'utf-8')
 relike(request, 'http://www.tunnckocore.tk/').then(result => {
   const [httpResponse, body] = result
 })
+```
+
+### [relike.promisify](./index.js#L97)
+> Wraps a function and returns a function that when is invoked returns Promise.  
+> Same as `Bluebird.promisify` or any other "promisify" thing - accept function and return a function.
+
+- `<fn>` **{Function}** callback-style or synchronous function to promisify
+- `[Prome]` **{Function}** custom Promise constructor/module to use, e.g. `Q`
+- `return` **{Function}** promisified function
+
+**Example**
+
+```js
+const fs = require('fs')
+const relike = require('relike')
+const readFile = relike.promisify(fs.readFile)
+
+readFile('package.json', 'utf8')
+  .then(JSON.parse)
+  .then(data => {
+    console.log(data.name) // => 'relike'
+  })
 ```
 
 ### relike.promise
