@@ -50,7 +50,7 @@ var relike = module.exports = function relike (fn) {
   }
 
   var promise = new Prome(function prome (resolve, reject) {
-    var isAsync = utils.isAsyncFunction(fn)
+    var isAsync = utils.isAsyncFunction(fn, ['callback', 'callback_', 'done', 'next', 'cb'])
     if (isAsync) {
       argz.args = argz.args.concat(function cb (err, res) {
         if (err) return reject(err)
