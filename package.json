@@ -5,14 +5,14 @@
   "repository": "hybridables/relike",
   "author": "Charlike Mike Reagent <@tunnckoCore> (http://www.tunnckocore.tk)",
   "main": "index.js",
-  "license": "MIT", 
+  "license": "MIT",
   "scripts": {
     "test": "standard && node test.js"
   },
   "dependencies": {
     "handle-arguments": "^3.0.4",
     "is-async-function": "^1.1.0",
-    "lazy-cache": "^1.0.3",
+    "lazy-cache": "^2.0.0",
     "native-or-another": "^3.0.1",
     "sliced": "^1.0.1"
   },
