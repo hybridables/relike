@@ -9,97 +9,44 @@
 
 var utils = require('./utils')
 
-/**
- * Will try to promisify `fn` with native Promise,
- * otherwise will use `Bluebird` or you can give
- * different promise module to `relike.promise`, for example `pinkie`.
- *
- * **Example**
- *
- * ```js
- * const fs = require('fs')
- * const request = require('request')
- * const relike = require('relike')
- *
- * relike(fs.readFile, 'package.json', 'utf-8').then(data => {
- *   console.log(JSON.parse(data).name)
- * })
- *
- * // handles multiple arguments by default (comes from `request`)
- * relike(request, 'http://www.tunnckocore.tk/').then(result => {
- *   const [httpResponse, body] = result
- * })
- * ```
- *
- * @name   relike
- * @param  {Function} `<fn>` callback-style or synchronous function to promisify
- * @return {Promise} promise
- * @api public
- */
 var relike = module.exports = function relike (fn) {
-  var Prome = utils.nativeOrAnother(relike.promise)
+  var Promize = utils.nativeOrAnother(relike.Promise)
   if (typeof fn !== 'function') {
-    return Prome.reject(new TypeError('relike expect a function'))
+    return Promize.reject(new TypeError('relike: expect `fn` be function'))
   }
-  var argz = utils.handleArguments(arguments)
   var self = this
+  var argz = utils.handleArguments(arguments)
   argz.args = argz.args.slice(1)
 
-  if (argz.callback && !utils.isAsyncFunction(argz.callback)) {
-    argz.args = argz.args.concat(argz.callback)
-  }
-
-  var promise = new Prome(function prome (resolve, reject) {
-    var isAsync = utils.isAsyncFunction(fn)
-    if (isAsync) {
-      argz.args = argz.args.concat(function cb (err, res) {
+  var promise = new Promize(function (resolve, reject) {
+    var isAsyncFn = utils.isAsyncFunction(fn)
+    if (isAsyncFn) {
+      argz.args = argz.args.concat(utils.onetime(utils.dezalgo(function callback (err, res) {
         if (err) return reject(err)
         if (arguments.length > 2) res = utils.sliced(arguments, 1)
         resolve(res)
-      })
+      })))
     }
     var syncResult = fn.apply(self, argz.args)
-    if (!isAsync) {
+    if (!isAsyncFn) {
       resolve(syncResult)
     }
   })
 
-  promise.Prome = Prome
-  promise.___customPromise = Prome.___customPromise
-  promise.___bluebirdPromise = Prome.___bluebirdPromise
+  // inherit from NativeOrAnother
+  // to detect what promise is used on enviroment
+  // where no support for native Promise
+  promise.Promise = Promize
+  promise.___customPromise = Promize.___customPromise
+  promise.___bluebirdPromise = Promize.___bluebirdPromise
+
   return promise
 }
 
-/**
- * Wraps a function and returns a function that when is
- * invoked returns Promise. Same as `Bluebird.promisify`.
- *
- * **Example**
- *
- * ```js
- * const fs = require('fs')
- * const relike = require('relike')
- * const readFile = relike.promisify(fs.readFile)
- *
- * readFile('package.json', 'utf8')
- *   .then(JSON.parse)
- *   .then(data => {
- *     console.log(data.name) // => 'relike'
- *   })
- * ```
- *
- * @name   .promisify
- * @param  {Function} `[fn]` function to promisify
- * @param  {Function} `[Prome]` custom Promise constructor/module to use, e.g. `Q`
- * @return {Function} promisified function
- * @api public
- */
-module.exports.promisify = function relikePromisify (fn, Prome) {
+relike.promisify = function relikePromisify (fn, Promize) {
   var self = this
   return function promisified () {
-    var ctx = self || this
-    var args = utils.sliced(arguments)
-    relike.promise = Prome || relikePromisify.promise || promisified.promise
-    return relike.apply(ctx, [fn].concat(args))
+    Promize = Promize || relikePromisify.Promise || promisified.Promise
+    return relike.apply(this || self, [fn].concat(utils.sliced(arguments)))
   }
 }

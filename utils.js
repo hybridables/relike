@@ -24,9 +24,10 @@ require = utils // eslint-disable-line no-undef, no-native-reassign
  * Lazily required module dependencies
  */
 
+require('dezalgo')
 require('handle-arguments')
-require('is-async-function')
 require('native-or-another')
+require('onetime')
 require('sliced')
 
 /**
