@@ -9,6 +9,35 @@
 
 var utils = require('./utils')
 
+/**
+ * > Runs `fn` in native Promise if available, or another
+ * provided in `relike.Promise`. If not given and not
+ * support for native Promise, it will use [bluebird][] promise,
+ * but only on that enviroments that don't have support.
+ *
+ * **Example**
+ *
+ * ```js
+ * const fs = require('fs')
+ * const request = require('request')
+ * const relike = require('relike')
+ *
+ * relike(fs.readFile, 'package.json', 'utf-8').then(data => {
+ *   console.log(JSON.parse(data).name) // => 'relike'
+ * })
+ *
+ * // handles multiple arguments by default (comes from `request`)
+ * relike(request, 'http://www.tunnckocore.tk/').then(result => {
+ *   const [httpResponse, body] = result
+ * })
+ * ```
+ *
+ * @name   relike
+ * @param  {Function} `<fn>` Some async or synchronous function.
+ * @return {Promise} Always native Promise if supported on enviroment.
+ * @api public
+ */
+
 var relike = module.exports = function relike (fn) {
   var Promize = utils.nativeOrAnother(relike.Promise)
   if (typeof fn !== 'function') {
@@ -42,6 +71,40 @@ var relike = module.exports = function relike (fn) {
 
   return promise
 }
+
+/**
+ * > Thin wrapper function around `relike()`. It **accepts
+ * a function** and **returns a function**, which when is
+ * invoked returns a `Promise`. Just like any other `.promisify`
+ * method, for example `Bluebird.promisify`.
+ *
+ * **Example**
+ *
+ * ```js
+ * var fs = require('fs')
+ * var relike = require('relike')
+ * var readFile = relike.promisify(fs.readFile)
+ *
+ * readFile('package.json', 'utf8')
+ *   .then(JSON.parse)
+ *   .then(data => {
+ *     console.log(data.name) // => 'relike'
+ *   })
+ *
+ * // also can promisify sync function
+ * var statFile = relike.promisify(fs.statSync)
+ * statFile('package.json')
+ *   .then(function (stats) {
+ *     console.log(stats.mtime)
+ *   })
+ * ```
+ *
+ * @name   .promisify
+ * @param  {Function} `fn` Some sync or async function to promisify.
+ * @param  {Function} `[Promize]` Promise constructor to be used on enviroment where no support for native.
+ * @return {Function} Promisified function, which always return a Promise.
+ * @api public
+ */
 
 relike.promisify = function relikePromisify (fn, Promize) {
   var self = this

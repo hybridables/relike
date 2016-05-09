@@ -48,6 +48,9 @@
     ],
     "lint": {
       "reflinks": true
-    }
+    },
+    "reflinks": [
+      "bluebird"
+    ]
   }
 }
