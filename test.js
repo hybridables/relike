@@ -42,15 +42,15 @@ test('should promisify with native Promise or Bluebird', function (done) {
   promise.then(function (res) {
     test.ok(res.indexOf('"license": "MIT"') !== -1)
     if (semver.lt(process.version, '0.11.13')) {
-      test.strictEqual(promise.___bluebirdPromise, true)
-      test.strictEqual(promise.Promise.___bluebirdPromise, true)
+      test.ok(promise.Promise.___bluebirdPromise === true)
+      test.ok(promise.___bluebirdPromise, true)
     }
     done()
   }, done)
 })
 
 test('should promisify with promise module (pinkie) given in `relike.Promise`', function (done) {
-  relike.Promise = require('pinkie')
+  relike.Promise = require('pinkie') // eslint-disable-line
   var promise = relike(fs.readFile, 'package.json')
 
   promise.then(function (res) {
