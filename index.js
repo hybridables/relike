@@ -109,7 +109,7 @@ var relike = module.exports = function relike (fn) {
 relike.promisify = function relikePromisify (fn, Promize) {
   var self = this
   return function promisified () {
-    Promize = Promize || relikePromisify.Promise || promisified.Promise
+    relike.Promise = Promize || relikePromisify.Promise || promisified.Promise
     return relike.apply(this || self, [fn].concat(utils.sliced(arguments)))
   }
 }

@@ -14,6 +14,10 @@ var isBuffer = require('is-buffer')
 var semver = require('semver')
 var relike = require('./index')
 
+function create () {
+  return require('./index')
+}
+
 function noop () {}
 
 function notSkipOne (one, two, cb) {
@@ -43,19 +47,6 @@ test('should promisify with native Promise or Bluebird', function () {
     if (semver.lt(process.version, '0.11.13')) {
       test.ok(promise.Promise.___bluebirdPromise === true)
       test.ok(promise.___bluebirdPromise, true)
-    }
-  })
-})
-
-test('should promisify with promise module (pinkie) given in `relike.Promise`', function () {
-  relike.Promise = require('pinkie') // eslint-disable-line
-  var promise = relike(fs.readFile, 'package.json')
-
-  return promise.then(function (res) {
-    test.strictEqual(isBuffer(res), true)
-    if (semver.lt(process.version, '0.11.13')) {
-      test.strictEqual(promise.___customPromise, true)
-      test.strictEqual(promise.Promise.___customPromise, true)
     }
   })
 })
@@ -124,4 +115,64 @@ test('should `.promisify` method wrap a function and return a function', functio
     .then(function (data) {
       test.strictEqual(data.name, 'relike')
     })
+})
+
+test('should `.promisify` method allow passing `.Promise` to promisified function', function () {
+  var relike = create()
+  var readFile = relike.promisify(fs.readFile)
+  readFile.Promise = require('pinkie') // eslint-disable-line
+  var promise = readFile('package.json', 'utf8')
+
+  return promise
+    .then(function (res) {
+      test.strictEqual(typeof res, 'string')
+      test.strictEqual(isBuffer(res), false)
+      if (semver.lt(process.version, '0.11.13')) {
+        test.strictEqual(promise.___customPromise, true)
+        test.strictEqual(promise.Promise.___customPromise, true)
+      }
+    })
+})
+
+test('should use promise passed to `relike.promisify.Promise` and promisifing with `.promisify`', function () {
+  var relike = create()
+  relike.promisify.Promise = require('pinkie') // eslint-disable-line
+  var statFile = relike.promisify(fs.stat)
+  var promise = statFile('index.js')
+
+  return promise.then(function (res) {
+    if (semver.lt(process.version, '0.11.13')) {
+      test.ok(promise.___customPromise === true)
+    }
+    test.strictEqual(typeof res, 'object')
+    test.ok(res.mtime)
+  })
+})
+
+test('should not use custom promise constructor passed to `relike.Promise` when use `.promisify`', function () {
+  var relike = create()
+  relike.Promise = require('pinkie') // eslint-disable-line
+  var readSync = relike.promisify(fs.readFileSync)
+  var promise = readSync('README.md', 'utf8')
+
+  return promise.then(function resolve (result) {
+    test.ok(typeof result === 'string')
+    if (semver.lt(process.version, '0.11.13')) {
+      test.strictEqual(promise.___customPromise, true)
+    }
+  })
+})
+
+test('should promisify with promise module (pinkie) given in `relike.Promise`', function () {
+  var relike = create()
+  relike.Promise = require('pinkie') // eslint-disable-line
+  var promise = relike(fs.readFile, 'package.json')
+
+  return promise.then(function (res) {
+    test.strictEqual(isBuffer(res), true)
+    if (semver.lt(process.version, '0.11.13')) {
+      test.strictEqual(promise.___customPromise, true)
+      test.strictEqual(promise.Promise.___customPromise, true)
+    }
+  })
 })
