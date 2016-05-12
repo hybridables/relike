@@ -34,6 +34,7 @@ var utils = require('./utils')
  *
  * @name   relike
  * @param  {Function} `<fn>` Some async or synchronous function.
+ * @param  {Mixed} `[...args]` Any number of any type of arguments, they are passed to `fn`.
  * @return {Promise} Always native Promise if supported on enviroment.
  * @api public
  */

@@ -23,12 +23,13 @@ Why you should be aware of that? Because if you give async function which don't 
 It's not a problem for most of the cases and for node's native packages, because that's a convention.
 So, the [relike-all][] package successfuly can promisifies all of the `fs` functions for example, except `fs.createReadStream` and `fs.createWriteStream` which is normal.
 
-### [relike](index.js#L41)
+### [relike](index.js#L42)
 > Runs `fn` in native Promise if available, or another provided in `relike.Promise`. If not given and not support for native Promise, it will use [bluebird][] promise, but only on that enviroments that don't have support.
 
 **Params**
 
 * `<fn>` **{Function}**: Some async or synchronous function.    
+* `[...args]` **{Mixed}**: Any number of any type of arguments, they are passed to `fn`.    
 * `returns` **{Promise}**: Always native Promise if supported on enviroment.  
 
 **Example**
@@ -48,7 +49,7 @@ relike(request, 'http://www.tunnckocore.tk/').then(result => {
 })
 ```
 
-### [.promisify](index.js#L109)
+### [.promisify](index.js#L110)
 > Thin wrapper function around `relike()`. It **accepts a function** and **returns a function**, which when is invoked returns a `Promise`. Just like any other `.promisify` method, for example `Bluebird.promisify`.
 
 **Params**
