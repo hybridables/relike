@@ -47,7 +47,10 @@
     "reflinks": [
       "bluebird",
       "through2",
-      "use"
+      "use",
+      "is-async-function",
+      "common-callback-names",
+      "relike-all"
     ],
     "run": true,
     "toc": false,

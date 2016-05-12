@@ -16,6 +16,13 @@ npm i relike --save
 const relike = require('relike')
 ```
 
+**Note:** It treat functions as asynchronous, based on [is-async-function][].  
+
+Why you should be aware of that? Because if you give async function which don't have last argument called with some of the [common-callback-names][] it will treat that function as synchronous and things may not work as expected.
+
+It's not a problem for most of the cases and for node's native packages, because that's a convention.
+So, the [relike-all][] package successfuly can promisifies all of the `fs` functions for example, except `fs.createReadStream` and `fs.createWriteStream` which is normal.
+
 ### [relike](index.js#L41)
 > Runs `fn` in native Promise if available, or another provided in `relike.Promise`. If not given and not support for native Promise, it will use [bluebird][] promise, but only on that enviroments that don't have support.
 
@@ -71,7 +78,7 @@ statFile('package.json')
   })
 ```
 
-## `relike.Promise`
+### `relike.Promise`
 
 While `relike` always trying to use native Promise if available in the enviroment, you can
 give a Promise constructor to be used on enviroment where there's no support - for example, old
@@ -142,6 +149,9 @@ But before doing anything, please read the [CONTRIBUTING.md](./CONTRIBUTING.md) 
 [![tunnckoCore.tk][author-www-img]][author-www-url] [![keybase tunnckoCore][keybase-img]][keybase-url] [![tunnckoCore npm][author-npm-img]][author-npm-url] [![tunnckoCore twitter][author-twitter-img]][author-twitter-url] [![tunnckoCore github][author-github-img]][author-github-url]
 
 [bluebird]: https://github.com/petkaantonov/bluebird
+[common-callback-names]: https://github.com/tunnckocore/common-callback-names
+[is-async-function]: https://github.com/tunnckocore/is-async-function
+[relike-all]: https://github.com/hybridables/relike-all
 [through2]: https://github.com/rvagg/through2
 [use]: https://github.com/jonschlinkert/use
 
