@@ -71,7 +71,7 @@ statFile('package.json')
   })
 ```
 
-## .Promise
+## `relike.Promise`
 
 While `relike` always trying to use native Promise if available in the enviroment, you can
 give a Promise constructor to be used on enviroment where there's no support - for example, old
@@ -86,7 +86,7 @@ can't give custom promise implementation to be used in any enviroment.
 var fs = require('fs')
 var relike = require('relike')
 
-relike.Promise = require('q')
+relike.Promise = require('q') // using `Q` promise on node 0.10
 var readFile = relike.promisify(fs.readFile)
 
 readFile('package.json', 'utf8')
@@ -100,11 +100,13 @@ var fs = require('fs')
 var relike = require('relike')
 var statFile = relike.promisify(fs.stat)
 
-statFile.Promise = require('when')
+statFile.Promise = require('when') // using `when` promise on node 0.10
 statFile('package.json').then(console.log, console.error)
 ```
 
-One more thing, is that you can access the used Promise and can detect what promise is used. It is easy, just as `promise.Promise` and you'll get it. Or look for `promise.___bluebirdPromise` and `promise.___customPromise` properties. `.___bluebirdPromise` (yea, with three underscores in front) will be true if enviroment is old and you didn't provide promise constructor to `.Promise`. So, when you give constructor `.__customPromise` will be true and `.___bluebirdPromise` will be false.
+One more thing, is that you can access the used Promise and can detect what promise is used. It is easy, just as `promise.Promise` and you'll get it.
+Or look for `promise.___bluebirdPromise` and `promise.___customPromise` properties. `.___bluebirdPromise` (yea, with three underscores in front) will be true if enviroment is old and you didn't provide promise constructor to `.Promise`.  
+So, when you give constructor `.__customPromise` will be true and `.___bluebirdPromise` will be false.
 
 ```js
 var fs = require('fs')
@@ -120,6 +122,17 @@ console.log(promise.___bluebirdPromise) // => `true` on old env, `false` otherwi
 console.log(promise.___customPromise) // => `true` when pass `.Promise`, false otherwise
 ```
 
+## Related
+* [callback2stream](https://www.npmjs.com/package/callback2stream): Transform sync, async or generator function to Stream. Correctly handle errors. [homepage](https://github.com/hybridables/callback2stream)
+* [hybridify](https://www.npmjs.com/package/hybridify): Building hybrid APIs. You can use both callback and promise in same… [more](https://www.npmjs.com/package/hybridify) | [homepage](https://github.com/hybridables/hybridify)
+* [letta](https://www.npmjs.com/package/letta): Let's move to promises! Drop-in replacement for `co@4` (passing 100% tests), but… [more](https://www.npmjs.com/package/letta) | [homepage](https://github.com/hybridables/letta)
+* [limon](https://www.npmjs.com/package/limon): The pluggable JavaScript lexer. Limon = Lemon. | [homepage](https://github.com/limonjs/limon)
+* [promise2stream](https://www.npmjs.com/package/promise2stream): Transform ES2015 Promise to Stream - specifically, Transform Stream using… [more](https://www.npmjs.com/package/promise2stream) | [homepage](https://github.com/hybridables/promise2stream)
+* [relike-all](https://www.npmjs.com/package/relike-all): Promisify all functions in an object, using `relike`. | [homepage](https://github.com/hybridables/relike-all)
+* [use-ware](https://www.npmjs.com/package/use-ware): Adds sync plugin support to your application. Kinda fork of [use][] -… [more](https://www.npmjs.com/package/use-ware) | [homepage](https://github.com/tunnckocore/use-ware)
+* [use](https://www.npmjs.com/package/use): Easily add plugin support to your node.js application. | [homepage](https://github.com/jonschlinkert/use)
+* [value2stream](https://www.npmjs.com/package/value2stream): Transform any value to stream. Create a stream from any value -… [more](https://www.npmjs.com/package/value2stream) | [homepage](https://github.com/hybridables/value2stream)
+
 ## Contributing
 Pull requests and stars are always welcome. For bugs and feature requests, [please create an issue](https://github.com/hybridables/relike/issues/new).  
 But before doing anything, please read the [CONTRIBUTING.md](./CONTRIBUTING.md) guidelines.
@@ -129,6 +142,8 @@ But before doing anything, please read the [CONTRIBUTING.md](./CONTRIBUTING.md) 
 [![tunnckoCore.tk][author-www-img]][author-www-url] [![keybase tunnckoCore][keybase-img]][keybase-url] [![tunnckoCore npm][author-npm-img]][author-npm-url] [![tunnckoCore twitter][author-twitter-img]][author-twitter-url] [![tunnckoCore github][author-github-img]][author-github-url]
 
 [bluebird]: https://github.com/petkaantonov/bluebird
+[through2]: https://github.com/rvagg/through2
+[use]: https://github.com/jonschlinkert/use
 
 [npmjs-url]: https://www.npmjs.com/package/relike
 [npmjs-img]: https://img.shields.io/npm/v/relike.svg?label=relike

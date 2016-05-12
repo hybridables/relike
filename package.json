@@ -44,17 +44,32 @@
     "simple"
   ],
   "verb": {
+    "reflinks": [
+      "bluebird",
+      "through2",
+      "use"
+    ],
     "run": true,
     "toc": false,
     "layout": "empty",
-    "tasks": [
-      "readme"
-    ],
     "lint": {
       "reflinks": true
     },
-    "reflinks": [
-      "bluebird"
-    ]
+    "tasks": [
+      "readme"
+    ],
+    "related": {
+      "list": [
+        "callback2stream",
+        "hybridify",
+        "letta",
+        "limon",
+        "promise2stream",
+        "relike-all",
+        "use",
+        "use-ware",
+        "value2stream"
+      ]
+    }
   }
 }
