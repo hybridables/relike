@@ -110,6 +110,7 @@ test('should catch errors from failing sync function', function () {
 test('should mute all errors and `.catch` them (should not crash)', function (done) {
   return relike(function () {
     foobar // eslint-disable-line no-undef
+    /* istanbul ignore next */
     return 123
   }).catch(function (err) {
     test.ifError(!err)
