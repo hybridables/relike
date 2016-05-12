@@ -107,6 +107,17 @@ test('should catch errors from failing sync function', function () {
   })
 })
 
+test('should mute all errors and `.catch` them (should not crash)', function (done) {
+  return relike(function () {
+    foobar // eslint-disable-line no-undef
+    return 123
+  }).catch(function (err) {
+    test.ifError(!err)
+    test.ok(err instanceof Error)
+    test.equal(err.name, 'ReferenceError')
+  })
+})
+
 test('should `.promisify` method wrap a function and return a function', function () {
   var readFile = relike.promisify(fs.readFile)
 
@@ -115,6 +126,16 @@ test('should `.promisify` method wrap a function and return a function', functio
     .then(function (data) {
       test.strictEqual(data.name, 'relike')
     })
+})
+
+test('should emit `unhandledRejection` event', function (done) {
+  relike(JSON.parse, '{boo:"bar}')
+  process.once('unhandledRejection', function (err) {
+    test.ifError(!err)
+    test.strictEqual(err.name, 'SyntaxError')
+    test.ok(/Unexpected token/.test(err.message))
+    done()
+  })
 })
 
 test('should `.promisify` method allow passing `.Promise` to promisified function', function () {
