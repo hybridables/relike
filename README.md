@@ -71,6 +71,55 @@ statFile('package.json')
   })
 ```
 
+## .Promise
+
+While `relike` always trying to use native Promise if available in the enviroment, you can
+give a Promise constructor to be used on enviroment where there's no support - for example, old
+broswers or node's 0.10 version. By default, `relike` will use and include [bluebird][] on old enviroments,
+as it is the fastest implementation of Promises. So, you are able to give Promise constructor, but
+it won't be used in modern enviroments - it always will use native Promise, you can't trick that. You
+can't give custom promise implementation to be used in any enviroment.
+
+**Example**
+
+```js
+var fs = require('fs')
+var relike = require('relike')
+
+relike.Promise = require('q')
+var readFile = relike.promisify(fs.readFile)
+
+readFile('package.json', 'utf8')
+  .then(console.log, console.error)
+```
+
+One way to pass a custom Promise constructor is as shown above. But the other way is passing it to `.Promise` of the promisified function, like that
+
+```js
+var fs = require('fs')
+var relike = require('relike')
+var statFile = relike.promisify(fs.stat)
+
+statFile.Promise = require('when')
+statFile('package.json').then(console.log, console.error)
+```
+
+One more thing, is that you can access the used Promise and can detect what promise is used. It is easy, just as `promise.Promise` and you'll get it. Or look for `promise.___bluebirdPromise` and `promise.___customPromise` properties. `.___bluebirdPromise` (yea, with three underscores in front) will be true if enviroment is old and you didn't provide promise constructor to `.Promise`. So, when you give constructor `.__customPromise` will be true and `.___bluebirdPromise` will be false.
+
+```js
+var fs = require('fs')
+var relike = require('relike')
+
+var promise = relike(fs.readFile, 'package.json', 'utf8')
+promise.then(JSON.parse).then(function (val) {
+  console.log(val.name) // => 'relike'
+}, console.error)
+
+console.log(promise.Promise) // => used Promise constructor
+console.log(promise.___bluebirdPromise) // => `true` on old env, `false` otherwise
+console.log(promise.___customPromise) // => `true` when pass `.Promise`, false otherwise
+```
+
 ## Contributing
 Pull requests and stars are always welcome. For bugs and feature requests, [please create an issue](https://github.com/hybridables/relike/issues/new).  
 But before doing anything, please read the [CONTRIBUTING.md](./CONTRIBUTING.md) guidelines.
