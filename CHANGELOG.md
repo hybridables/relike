@@ -1,5 +1,9 @@
 
 
+## 1.1.1 - 2016-05-12
+- Release v1.1.1 / npm@v1.1.1
+- update docs to show that you can pass any number of arguments to `relike()` after the first one - they are passed to the first argument (because it should be function, haha)
+
 ## 1.1.0 - 2016-05-12
 - Release v1.1.0 / npm@v1.1.0
 - add more tests for ensurance that things works as expected
