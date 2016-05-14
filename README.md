@@ -79,7 +79,7 @@ statFile('package.json')
   })
 ```
 
-### `relike.Promise`
+### .Promise
 
 While `relike` always trying to use native Promise if available in the enviroment, you can
 give a Promise constructor to be used on enviroment where there's no support - for example, old
@@ -133,7 +133,7 @@ console.log(promise.___customPromise) // => `true` when pass `.Promise`, falsey 
 ## Related
 * [callback2stream](https://www.npmjs.com/package/callback2stream): Transform sync, async or generator function to Stream. Correctly handle errors. [homepage](https://github.com/hybridables/callback2stream)
 * [hybridify](https://www.npmjs.com/package/hybridify): Building hybrid APIs. You can use both callback and promise in same… [more](https://www.npmjs.com/package/hybridify) | [homepage](https://github.com/hybridables/hybridify)
-* [letta](https://www.npmjs.com/package/letta): Let's move to promises! Drop-in replacement for `co@4` (passing 100% tests), but… [more](https://www.npmjs.com/package/letta) | [homepage](https://github.com/hybridables/letta)
+* [letta](https://www.npmjs.com/package/letta): Promisify sync, async or generator function, using [relike][]. Kind of promisify, but… [more](https://www.npmjs.com/package/letta) | [homepage](https://github.com/hybridables/letta)
 * [limon](https://www.npmjs.com/package/limon): The pluggable JavaScript lexer. Limon = Lemon. | [homepage](https://github.com/limonjs/limon)
 * [promise2stream](https://www.npmjs.com/package/promise2stream): Transform ES2015 Promise to Stream - specifically, Transform Stream using… [more](https://www.npmjs.com/package/promise2stream) | [homepage](https://github.com/hybridables/promise2stream)
 * [relike-all](https://www.npmjs.com/package/relike-all): Promisify all functions in an object, using `relike`. | [homepage](https://github.com/hybridables/relike-all)
@@ -149,6 +149,7 @@ But before doing anything, please read the [CONTRIBUTING.md](./CONTRIBUTING.md) 
 
 [![tunnckoCore.tk][author-www-img]][author-www-url] [![keybase tunnckoCore][keybase-img]][keybase-url] [![tunnckoCore npm][author-npm-img]][author-npm-url] [![tunnckoCore twitter][author-twitter-img]][author-twitter-url] [![tunnckoCore github][author-github-img]][author-github-url]
 
+[relike]: https://github.com/hybridables/relike
 [bluebird]: https://github.com/petkaantonov/bluebird
 [common-callback-names]: https://github.com/tunnckocore/common-callback-names
 [is-async-function]: https://github.com/tunnckocore/is-async-function

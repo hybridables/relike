@@ -46,11 +46,12 @@
   "verb": {
     "reflinks": [
       "bluebird",
+      "common-callback-names",
+      "is-async-function",
+      "relike-all",
       "through2",
       "use",
-      "is-async-function",
-      "common-callback-names",
-      "relike-all"
+      "relike"
     ],
     "run": true,
     "toc": false,
