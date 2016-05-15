@@ -48,10 +48,13 @@
       "bluebird",
       "common-callback-names",
       "is-async-function",
+      "relike",
       "relike-all",
       "through2",
       "use",
-      "relike"
+      "hybridify",
+      "hybridify-all",
+      "letta"
     ],
     "run": true,
     "toc": false,
