@@ -15,7 +15,7 @@ var semver = require('semver')
 var relike = require('./index')
 
 function create () {
-  return require('./index')
+  return require('./index') // eslint-disable-line
 }
 
 function noop () {}
@@ -109,7 +109,7 @@ test('should catch errors from failing sync function', function () {
 
 test('should mute all errors and `.catch` them (should not crash)', function (done) {
   return relike(function () {
-    foobar // eslint-disable-line no-undef
+    foobar // eslint-disable-line
     /* istanbul ignore next */
     return 123
   }).catch(function (err) {
@@ -193,8 +193,8 @@ test('should promisify with promise module (pinkie) given in `relike.Promise`', 
   return promise.then(function (res) {
     test.strictEqual(isBuffer(res), true)
     if (semver.lt(process.version, '0.11.13')) {
-      test.strictEqual(promise.___customPromise, true)
-      test.strictEqual(promise.Promise.___customPromise, true)
+      test.ok(promise.Promise.___customPromise === true)
+      test.strictEqual(promise.___customPromise === true, true)
     }
   })
 })
