@@ -1,5 +1,9 @@
 
 
+## 1.1.3 - 2016-05-15
+- Release v1.1.3 / npm@v1.1.3
+- update docs: showing wrong using of `.Promise`
+
 ## 1.1.2 - 2016-05-15
 - Release v1.1.2 / npm@v1.1.2
 - readme tweaks
