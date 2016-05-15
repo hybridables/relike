@@ -1,5 +1,9 @@
 
 
+## 1.1.5 - 2016-05-16
+- Release v1.1.5 / npm@v1.1.5
+- chore: update readme and related list
+
 ## 1.1.4 - 2016-05-16
 - Release v1.1.4 / npm@v1.1.4
 - chore: fix codeclimate issues
