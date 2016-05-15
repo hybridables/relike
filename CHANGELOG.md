@@ -1,5 +1,9 @@
 
 
+## 1.1.4 - 2016-05-16
+- Release v1.1.4 / npm@v1.1.4
+- chore: fix codeclimate issues
+
 ## 1.1.3 - 2016-05-15
 - Release v1.1.3 / npm@v1.1.3
 - update docs: showing wrong using of `.Promise`

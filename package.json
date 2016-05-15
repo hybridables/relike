@@ -1,6 +1,6 @@
 {
   "name": "relike",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "description": "Simple promisify async or sync function with sane defaults. Lower level than `promisify` thing. Can be used to create `promisify` method.",
   "repository": "hybridables/relike",
   "author": "Charlike Mike Reagent <@tunnckoCore> (http://www.tunnckocore.tk)",
