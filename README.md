@@ -94,7 +94,7 @@ can't give custom promise implementation to be used in any enviroment.
 var fs = require('fs')
 var relike = require('relike')
 
-relike.Promise = require('q') // using `Q` promise on node 0.10
+relike.promisify.Promise = require('q') // using `Q` promise on node 0.10
 var readFile = relike.promisify(fs.readFile)
 
 readFile('package.json', 'utf8')
@@ -128,6 +128,19 @@ promise.then(JSON.parse).then(function (val) {
 console.log(promise.Promise) // => used Promise constructor
 console.log(promise.___bluebirdPromise) // => `true` on old env, falsey otherwise
 console.log(promise.___customPromise) // => `true` when pass `.Promise`, falsey otherwise
+```
+
+Or finally, you can pass Promise constructor as second argument to `.promisify` method. Like that
+
+```js
+const fs = require('fs')
+const relike = require('relike')
+const readFile = relike.promisify(fs.readFile, require('when'))
+
+const promise = readFile('index.js')
+
+console.log(promise.Promise) // => The `when` promise constructor, on old enviroments
+console.log(promise.___customPromise) // => `true` on old environments
 ```
 
 ## Related
